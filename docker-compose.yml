@@ -1,0 +1,31 @@
+services:
+
+  traduora:
+    image: traduora/traduora:latest
+    ports:
+     - "8080:8080"
+    environment:
+      NODE_ENV: production
+      TR_SECRET: somelongstringotkeepthingssafe # generate a strong secret (used for signing JWT auth tokens)
+      TR_VIRTUAL_HOST: localhost  # i.e. traduora.example.com
+      TR_DB_TYPE: mysql  # All supported by https://typeorm.io/#/connection-options/common-connection-options (mysql/postgres/sqlite...)
+      TR_DB_HOST: mysqldb  # depends on your DataBase config
+      TR_DB_PORT: 3306
+      TR_DB_DATABASE: tr_dev
+      TR_DB_USER: trdev
+      TR_DB_PASSWORD: trdevpassword
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql:5.7
+    ports:
+     - "3306:3306"
+    environment:
+      MYSQL_DATABASE: tr_dev
+      MYSQL_USER: trdev
+      MYSQL_PASSWORD: trdevpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+
+
